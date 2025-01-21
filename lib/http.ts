@@ -93,6 +93,7 @@ const request = async <Response>(
 			: options.baseUrl;
 
 	const fullUrl = `${baseUrl}/${normalizePath(url)}`;
+    console.log('URL:::', fullUrl)
 	const res = await fetch(fullUrl, {
 		...options,
 		headers: {
