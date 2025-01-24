@@ -23,14 +23,13 @@ export async function POST(request: Request) {
 			expires: decodedAccessToken.exp * 1000,
 		});
 
-		cookieStore.set('refreshToken', accessToken, {
+		cookieStore.set('refreshToken', refreshToken, {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
 			secure: true,
 			expires: decodedRefreshToken.exp * 1000,
 		});
-        console.log('hehe:::', accessToken)
 
 
 		return Response.json(payload);
