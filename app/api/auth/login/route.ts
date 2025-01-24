@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 			httpOnly: true,
 			sameSite: 'lax',
 			secure: true,
-			expires: decodedAccessToken.exp * 100,
+			expires: decodedAccessToken.exp * 1000,
 		});
 
 		cookieStore.set('refreshToken', accessToken, {
@@ -28,8 +28,10 @@ export async function POST(request: Request) {
 			httpOnly: true,
 			sameSite: 'lax',
 			secure: true,
-			expires: decodedRefreshToken.exp * 100,
+			expires: decodedRefreshToken.exp * 1000,
 		});
+        console.log('hehe:::', accessToken)
+
 
 		return Response.json(payload);
 	} catch (error) {
