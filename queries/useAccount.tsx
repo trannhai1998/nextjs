@@ -10,7 +10,13 @@ export const useAccountMe = () => {
 };
 
 export const useUpdateMe = () => {
-    return useMutation({
-        mutationFn: accountApiRequest.updateMe
-    })
+	return useMutation({
+		mutationFn: accountApiRequest.updateMe,
+	});
+};
+
+export const useChangePassword = () => {
+	return useMutation({
+		mutationFn: accountApiRequest.changePassword,
+	});
 };
