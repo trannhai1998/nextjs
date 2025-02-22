@@ -24,7 +24,6 @@ const Logout = () => {
 			(!!accessTokenFromUrl &&
 				accessTokenFromUrl !== getAccessTokenFromLocalStorage())
 		) {
-			console.log('Logout Error');
 			return;
 		}
 		ref.current = mutateAsync;
