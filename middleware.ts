@@ -6,16 +6,34 @@ const unAuthPaths = ['/login'];
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	console.log(request.cookies);
-	const isAuth = !!request.cookies.get('accessToken');
-	console.log(request.cookies.get('accessToken'));
-	console.log(isAuth);
-	if (privatePaths.some((path) => pathname.startsWith(path)) && !isAuth) {
+	const accessToken = request.cookies.get('accessToken')?.value;
+	const refreshToken = request.cookies.get('refreshToken')?.value;
+	// Private path and NOT authenticated => login
+	if (
+		privatePaths.some((path) => pathname.startsWith(path)) &&
+		!refreshToken
+	) {
 		return NextResponse.redirect(new URL('/login', request.url));
 	}
 
-	if (unAuthPaths.some((path) => pathname.startsWith(path)) && isAuth) {
+	// Login path and YES authenticated => home
+	if (
+		unAuthPaths.some((path) => pathname.startsWith(path)) &&
+		!!refreshToken
+	) {
 		return NextResponse.redirect(new URL('/', request.url));
+	}
+
+	// Private path and YES authenticated But accessToken expired => login
+	if (
+		privatePaths.some((path) => pathname.startsWith(path)) &&
+		!accessToken &&
+		refreshToken
+	) {
+		const url = new URL('/logout', request.url);
+		url.searchParams.set('refreshToken', refreshToken);
+
+		return NextResponse.redirect(url);
 	}
 
 	return NextResponse.next();

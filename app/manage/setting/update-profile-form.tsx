@@ -73,7 +73,6 @@ export default function UpdateProfileForm() {
 				formData.append('file', fileAvatar);
 				const uploadImageResult =
 					await useUploadMediaMutation.mutateAsync(formData);
-				console.log(uploadImageResult);
 				const imageUrl = uploadImageResult.payload.data;
 
 				bodyRequest.avatar = imageUrl;

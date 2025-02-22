@@ -144,6 +144,9 @@ const request = async <Response>(
 					}
 				}
 			} else {
+				// This case when still have access token (valid)
+				// And We call API on NextJs server (route handler, Server Component) to Server BE
+
 				const accessToken = (
 					options?.headers as any
 				)?.Authorization.split('Bearer ')[1];

@@ -10,6 +10,9 @@ export async function POST(request: Request) {
 		const accessToken = cookieStore.get('accessToken')?.value;
 		const refreshToken = cookieStore.get('refreshToken')?.value;
 
+		cookieStore.delete('accessToken');
+		cookieStore.delete('refreshToken');
+
 		if (!accessToken || !refreshToken) {
 			return Response.json(
 				{
@@ -21,9 +24,6 @@ export async function POST(request: Request) {
 			);
 		}
 
-		cookieStore.delete('accessToken');
-		cookieStore.delete('refreshToken');
-		console.log('refreshToken:::', refreshToken);
 		const result = await authApiRequest.sLogout({
 			refreshToken,
 			accessToken,
