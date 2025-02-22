@@ -7,7 +7,7 @@ import {
 	setAccessTokenToLocalStorage,
 	setRefreshTokenToLocalStorage,
 } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import { authApiRequest } from '@/app/apiRequests/auth';
@@ -17,6 +17,8 @@ const TIMEOUT = 1000;
 
 export default function RefreshToken() {
 	const pathname = usePathname();
+	const router = useRouter();
+
 	useEffect(() => {
 		if (UNAUTHENTICATED_PATHS.includes(pathname)) {
 			return;
@@ -31,15 +33,25 @@ export default function RefreshToken() {
 		checkAndRefreshToken({
 			onError: () => {
 				clearInterval(interval);
+				router.push('/login');
 			},
 		});
 
-		interval = setInterval(checkAndRefreshToken, TIMEOUT);
+		interval = setInterval(
+			() =>
+				checkAndRefreshToken({
+					onError: () => {
+						clearInterval(interval);
+						router.push('/login');
+					},
+				}),
+			TIMEOUT,
+		);
 
 		return () => {
 			clearInterval(interval);
 		};
-	}, [pathname]);
+	}, [pathname, router]);
 
 	return null;
 }

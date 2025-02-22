@@ -57,6 +57,13 @@ export const setRefreshTokenToLocalStorage = (token: string) => {
 	return isWindow ? localStorage?.setItem('refreshToken', token) : null;
 };
 
+export const removeTokensFromLocalStorage = () => {
+	if (isWindow) {
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
+	}
+};
+
 export const checkAndRefreshToken = async (params: {
 	onError?: () => void;
 	onSuccess?: () => void;
@@ -86,6 +93,9 @@ export const checkAndRefreshToken = async (params: {
 	console.log('Run check refresh token');
 	// When refresh token is expired
 	if (decodedRefreshToken.exp <= now) {
+		removeTokensFromLocalStorage();
+
+		params.onError && params.onError();
 		return;
 	}
 	// When token exp - now < 1/3 of token life time => refresh token

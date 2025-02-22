@@ -15,10 +15,9 @@ const Logout = () => {
 	const searchParams = useSearchParams();
 	const refreshTokenFromUrl = searchParams.get('refreshToken');
 	const redirect = searchParams.get('redirect');
-    console.log('here', redirect)
 	useEffect(() => {
 		if (
-            redirect &&
+			redirect &&
 			!!refreshTokenFromUrl &&
 			refreshTokenFromUrl === getRefreshTokenFromLocalStorage()
 		) {
