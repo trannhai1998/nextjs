@@ -1,5 +1,6 @@
 'use client';
 
+import { toast } from '@/hooks/use-toast';
 import {
 	checkAndRefreshToken,
 	getAccessTokenFromLocalStorage,
@@ -26,6 +27,8 @@ const Logout = () => {
 			});
 
 			return;
+		} else {
+			router.push('/');
 		}
 	}, [router, refreshTokenFromUrl, redirect]);
 	return <div>Refresh token...</div>;

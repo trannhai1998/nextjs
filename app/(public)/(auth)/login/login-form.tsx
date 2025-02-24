@@ -15,11 +15,17 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from '@/queries/useAuth';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorApi } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
+import { handleErrorApi, removeTokensFromLocalStorage } from '@/lib/utils';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useAppContext } from '@/components/app-provider';
 
 export default function LoginForm() {
 	const loginMutation = useLoginMutation();
+	const { setIsAuth } = useAppContext();
+
+	const searchParams = useSearchParams();
+	const isClearTokens = searchParams.get('clearTokens') === 'true';
 	const router = useRouter();
 
 	const form = useForm<LoginBodyType>({
@@ -49,6 +55,12 @@ export default function LoginForm() {
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (isClearTokens) {
+			setIsAuth(false);
+		}
+	}, [isClearTokens]);
 
 	return (
 		<Card className="mx-auto max-w-sm">

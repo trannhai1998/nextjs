@@ -88,7 +88,7 @@ export const checkAndRefreshToken = async (params: {
 	// expired time of token is epoch time (second)
 	// when u use new Date().getTime() => u get epoch time (millisecond)
 
-	const now = Math.round(new Date().getTime() / 1000);
+	const now = (new Date().getTime() / 1000) - 1; 
 
 	console.log('Run check refresh token');
 	// When refresh token is expired
