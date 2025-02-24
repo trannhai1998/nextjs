@@ -17,7 +17,7 @@ import { useLoginMutation } from '@/queries/useAuth';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorApi, removeTokensFromLocalStorage } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useAppContext } from '@/components/app-provider';
 
 export default function LoginForm() {
@@ -66,79 +66,83 @@ export default function LoginForm() {
 	}, [isClearTokens]);
 
 	return (
-		<Card className="mx-auto max-w-sm">
-			<CardHeader>
-				<CardTitle className="text-2xl">Đăng nhập</CardTitle>
-				<CardDescription>
-					Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Form {...form}>
-					<form
-						className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
-						noValidate
-						onSubmit={form.handleSubmit(onSubmit, (err) => {
-							console.log(err);
-						})}>
-						<div className="grid gap-4">
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<div className="grid gap-2">
-											<Label htmlFor="email">Email</Label>
-											<Input
-												id="email"
-												type="email"
-												placeholder="m@example.com"
-												required
-												{...field}
-											/>
-											<FormMessage />
-										</div>
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<div className="grid gap-2">
-											<div className="flex items-center">
-												<Label htmlFor="password">
-													Password
+		<Suspense>
+			<Card className="mx-auto max-w-sm">
+				<CardHeader>
+					<CardTitle className="text-2xl">Đăng nhập</CardTitle>
+					<CardDescription>
+						Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Form {...form}>
+						<form
+							className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
+							noValidate
+							onSubmit={form.handleSubmit(onSubmit, (err) => {
+								console.log(err);
+							})}>
+							<div className="grid gap-4">
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem>
+											<div className="grid gap-2">
+												<Label htmlFor="email">
+													Email
 												</Label>
+												<Input
+													id="email"
+													type="email"
+													placeholder="m@example.com"
+													required
+													{...field}
+												/>
+												<FormMessage />
 											</div>
-											<Input
-												id="password"
-												type="password"
-												required
-												{...field}
-											/>
-											<FormMessage />
-										</div>
-									</FormItem>
-								)}
-							/>
-							<Button
-								type="submit"
-								className="w-full"
-								disabled={loginMutation.isPending}>
-								Đăng nhập
-							</Button>
-							<Button
-								variant="outline"
-								className="w-full"
-								type="button">
-								Đăng nhập bằng Google
-							</Button>
-						</div>
-					</form>
-				</Form>
-			</CardContent>
-		</Card>
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem>
+											<div className="grid gap-2">
+												<div className="flex items-center">
+													<Label htmlFor="password">
+														Password
+													</Label>
+												</div>
+												<Input
+													id="password"
+													type="password"
+													required
+													{...field}
+												/>
+												<FormMessage />
+											</div>
+										</FormItem>
+									)}
+								/>
+								<Button
+									type="submit"
+									className="w-full"
+									disabled={loginMutation.isPending}>
+									Đăng nhập
+								</Button>
+								<Button
+									variant="outline"
+									className="w-full"
+									type="button">
+									Đăng nhập bằng Google
+								</Button>
+							</div>
+						</form>
+					</Form>
+				</CardContent>
+			</Card>
+		</Suspense>
 	);
 }
