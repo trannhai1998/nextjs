@@ -45,10 +45,13 @@ export default function LoginForm() {
 			if (result.status === 200) {
 				router.push('/manage/dashboard');
 			}
+
+			setIsAuth(true);
 			toast({
 				description: result.payload.message,
 			});
 		} catch (error: any) {
+			setIsAuth(false);
 			handleErrorApi({
 				error,
 				setError: form.setError,

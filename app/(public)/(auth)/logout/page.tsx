@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppContext } from '@/components/app-provider';
 import {
 	getAccessTokenFromLocalStorage,
 	getRefreshTokenFromLocalStorage,
@@ -15,6 +16,7 @@ const Logout = () => {
 	const searchParams = useSearchParams();
 	const refreshTokenFromUrl = searchParams.get('refreshToken');
 	const accessTokenFromUrl = searchParams.get('accessToken');
+	const { setIsAuth } = useAppContext();
 
 	useEffect(() => {
 		if (
@@ -30,6 +32,7 @@ const Logout = () => {
 				setTimeout(() => {
 					ref.current = null;
 				}, 1000);
+				setIsAuth(false);
 				router.push('/login');
 			});
 		} else {
